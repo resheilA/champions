@@ -126,3 +126,4 @@
 
 </html>
 <!-- // grids block 5 -->
+<?php $error_mysql = ""; ?>

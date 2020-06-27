@@ -1,25 +1,43 @@
 <?php 
+include_once("session.php");
+include("header.php");
+include_once("updatedata.php");
+include_once("singlegetdata.php");
 
-include_once("header.php");
+
+singletable("players_profile","WHERE user_id = '".$user_id."'");
+singletable("players_workplace","WHERE user_id = '".$user_id."'");
+singletable("players_achievement","WHERE user_id = '".$user_id."'");
+singletable("players","WHERE id = '".$user_id."'");
+
+/*
+echo "<pre>";
+print_r($_POST);
+echo "</pre>";
+*/
+
+$_POST["achievements|user_id"] = $_POST["players|id"];
+$_POST["workplace|user_id"] = $_POST["players|id"];
 ?>
-
-
-
 
 <!-- content-with-photo4 block -->
 <section class="" id="about">
+<?php echo $error_mysql; ?>			
 
+	
 <div class="container-md-3 p-5 my-3">
         <div class="row">
             <div class="col-md-3">
                 <div class="card" style="width:300px">
-                    <img class="card-img-top" src="https://www.w3schools.com/bootstrap4/img_avatar1.png" alt="Card image">
+                    <img class="card-img-top" id="display_profileimage" src="<?php if(isset($_POST["players_profile|profile_image"])) {echo $_POST["players_profile|profile_image"];}else { echo "https://www.w3schools.com/bootstrap4/img_avatar1.png";} ?>" alt="Profile image">
                     <div class="card-img-overlay">
-                        <h4 class="card-text">Change</h4>
+                        <h4 class="card-text">
+  <button type="button"  class="btn btn-lg border" style="background-color:lightgrey;"  data-toggle="modal" data-target="#profileimg"><h3>
+   <i class="fa fa-picture-o"></i> Change</h3>
+</button></h4>
                     </div>
                     <div class="card-body">
-                        <h4 class="card-title">John Doe</h4>
-                        <p class="card-text">Some example text.</p>    
+                      <center>Your Profile Picture</center>
                     </div>
                 </div>  
             </div>
@@ -27,43 +45,43 @@ include_once("header.php");
                 <div class="card">                
                     <div class="card-body">                        
                         <h4 class="card-title">Your Profile</h4>
-                        <form action="savedata.php" method="post">
-    <input type="hidden" name="id" value="<?php echo $results['players']->id ?>"/>
-    <input type="hidden" name="roleid" value="<?php echo "13114113"; ?>"/>
-    <input type="hidden" id="workplaces_from" name="workplace_from" />
-	<input type="hidden" id="workplaces_name" name="workplace_name" />
-	<input type="hidden" id="workplaces_till" name="workplace_till" />
-	<input type="hidden" id="workplaces_position" name="workplace_position" />
-	<input type="hidden" id="workplaces_location" name="workplace_location" />	
-	<input type="hidden" id="achievements_title" name="achievements_title" />	
-	<input type="hidden" id="achievements_desc" name="achievements_desc" />	
+                        <form method="post" id="player_profile" onsubmit="event.preventDefault(); checkauthentic();">
+				<input type="hidden" id="players_profile|profile_image" name="players_profile|profile_image" value="<?php if(isset($_POST["players_profile|profile_image"])) {echo $_POST["players_profile|profile_image"];}?>">
+	<input type="hidden" id="workplaces_from" name="players_workplace|workplace_from" />
+	<input type="hidden" id="workplaces_name" name="players_workplace|workplace_name" />
+	<input type="hidden" id="workplaces_till" name="players_workplace|workplace_till" />
+	<input type="hidden" id="workplaces_position" name="players_workplace|workplace_position" />
+	<input type="hidden" id="workplaces_location" name="players_workplace|workplace_location" />	
+	<input type="hidden" id="achievements_title" name="players_achievement|achievements_title" />	
+	<input type="hidden" id="achievements_desc" name="players_achievement|achievements_desc" />	
+	<input type="hidden" name="players_workplace|user_id" value="<?php echo $_POST['players|id']; ?>"/>	
+	<input type="hidden" name="players_achievement|user_id" value="<?php echo $_POST['players|id']; ?>"/>	
+	<input type="hidden" name="players|id" value="<?php echo $_POST['players|id']; ?>"/>	
+	<input type="hidden" name="players_profile|user_id" value="<?php echo $_POST['players|id']; ?>"/>	
     
-    <input type="hidden" name="player" value="yes"/>
-
-
-	
 <div class="form-group">
   Name<br>
-  <input type="text" name="name" data-is="yes" id="player_name" class="form-control" value="<?php echo $results['players']->name; ?>">
+  <input type="text" name="players|name" data-is="yes" id="name" class="form-control" value="<?php if(isset($_POST["players|name"])){echo $_POST['players|name']; } ?>">
   <div id="player_name_status"></div>
 </div>
 
 
+    
+<div class="form-group">
+  Choose A Unique Name<br>
+  <input type="text" name="players|uniquename" data-is="yes" data-comma="yes" id="uniquename" class="form-control" value="<?php if(isset($_POST["players|uniquename"])){echo $_POST['players|uniquename']; } ?>">
+  <div id="uniquename_status"></div>
+</div>
+
 <div class="form-group">
   About<br>
-  <input type="text" name="about" data-is="no" id="player_about" class="form-control" value="<?php echo $results['players']->about; ?>">
+  <input type="text" name="players|about" data-comma="yes" data-is="no" id="players|about" class="form-control" value="<?php if(isset($_POST["players|about"])){echo $_POST['players|about']; } ?>">
   <div id="player_about_status"></div>
 </div>
 
 
-<div class="form-group">
-  Email<br>
-  <input type="email" data-is="yes" name="email" id="player_email" class="form-control" value="<?php echo $results['players']->email; ?>">    
-  <div id="player_email_status"></div>
-</div>
-
 <div class="form-group">  
-  Contact No<br> <input type="text" data-is="yes" id="player_contactno" class="form-control" name="contact_no" value="<?php echo htmlspecialchars( $results['players']->contact_no )?>">
+  Contact No<br> <input type="text" data-is="yes" id="player_contactno" class="form-control" name="players|contact_no" value="<?php if(isset($_POST["players|contact_no"])){echo $_POST['players|contact_no']; } ?>">
 <div id="player_contactno_status"></div>
 </div>
 
@@ -75,8 +93,8 @@ include_once("header.php");
   <div id="addedsports">
   </div>
   </h5>
-  <input type="hidden" name="sports" id="og_sports" value="<?php echo $results['players']->sports; ?>">
-  <input type="text" name="sports" list="autocompleteitems" onclick="addtosportlist('sports_list')" onInput="showsports('getsports.php', 'sports_list')" id="sports_list" class="form-control" placeholder="Enter the sports you are interested"/>  
+  <input type="hidden" name="players|sports" id="og_sports" value="<?php if(isset($_POST["players|sports"])){echo $_POST['players|sports']; } ?>">
+  <input type="text" list="autocompleteitems" onclick="addtosportlist('sports_list')" onInput="showsports('getsports.php', 'sports_list')" id="sports_list" class="form-control" placeholder="Enter the sports you are interested"/>  
   <datalist id="autocompleteitems">
 </datalist>
 </div>	
@@ -97,10 +115,10 @@ include_once("header.php");
 </button>
 
 <div class="form-group">  
-<br>Password <br><input type="password" id="player_password" class="form-control" name="password" value="<?php echo htmlspecialchars( $results['players']->password )?>">
+<br>Password <br><input type="password" id="password" class="form-control" name="players|password" value="<?php if(isset($_POST["players|password"])){echo $_POST['players|password']; } ?>">
 <div id="player_password_status"></div>
 </div>
-    <button type="submit" id="save_button" type="button" class="btn btn-success" name="saveChanges" value="Save Changes">Save</button>    
+    <button type="submit" id="save_button" type="button" class="btn btn-success" value="Save Changes">Save</button>    
 </form>
 
                     </div>                    
@@ -113,13 +131,16 @@ include_once("header.php");
 
 
 
-  <script>
-  var workplace_count = 0;
-  var arr_till = [];
-  var arr_name = [];
-  var arr_from = [];
-  var arr_location = [];
-  var arr_position = [];
+  <script>  
+  var arr_till = <?php if(!empty($_POST['players_workplace|workplace_till'])){echo $_POST['players_workplace|workplace_till'];}else{echo "[]";} ?>;
+  var arr_name = <?php if(!empty($_POST['players_workplace|workplace_name'])){echo $_POST['players_workplace|workplace_name'];}else{echo "[]";} ?>;
+  var arr_from = <?php if(!empty($_POST['players_workplace|workplace_from'])){echo $_POST['players_workplace|workplace_from'];}else{echo "[]";} ?>;
+  var arr_location = <?php if(!empty($_POST['players_workplace|workplace_location'])){echo $_POST['players_workplace|workplace_location'];}else{echo "[]";} ?>;
+  var arr_position = <?php if(!empty($_POST['players_workplace|workplace_position'])){echo $_POST['players_workplace|workplace_position'];}else{echo "[]";} ?>;
+    
+  var workplace_count = arr_name.length;  
+  
+  
   var editworkplace_id = "";
   
   function addworkplace()
@@ -135,7 +156,7 @@ include_once("header.php");
 		arr_from.push(workplace_from);
 		arr_location.push(workplace_location);
 		arr_position.push(workplace_position);
-		
+			
 		if(editworkplace_id != "")
 		{
 			remove_workplace(editworkplace_id);
@@ -149,11 +170,12 @@ include_once("header.php");
   
   function showworkplace()
   {
-	  document.getElementById("workplaces_name").value = arr_name;
-	  document.getElementById("workplaces_position").value = arr_position;
-	  document.getElementById("workplaces_location").value = arr_location;
-	  document.getElementById("workplaces_from").value = arr_from;
-	  document.getElementById("workplaces_till").value = arr_till;
+	  document.getElementById("workplaces_name").value = JSON.stringify(arr_name);
+	  document.getElementById("workplaces_position").value = JSON.stringify(arr_position);
+	  document.getElementById("workplaces_location").value = JSON.stringify(arr_location);
+	  document.getElementById("workplaces_from").value = JSON.stringify(arr_from);
+	  document.getElementById("workplaces_till").value = JSON.stringify(arr_till);
+	 
 	 
 	  document.getElementById("workplace_name").value = "";
 	  document.getElementById("workplace_from").value = "";
@@ -177,11 +199,11 @@ include_once("header.php");
 	  
 	  document.getElementById("place_work").innerHTML = "";
 	  var workplaces_c = 0;
-	  console.log(workplace_count);
+	  //console.log(workplace_count);
 	  
 	  while(workplaces_c != workplace_count )
 	  {		
-		 console.log(arr_from[workplaces_c]);
+		 //console.log(arr_from[workplaces_c]);
 		 if(arr_name[workplaces_c])	
 		 {
 		 if(!arr_from[workplaces_c]){arr_from[workplaces_c] = new Date();}	 
@@ -215,7 +237,8 @@ include_once("header.php");
 	  arr_till.splice(id, 1);
 	  arr_position.splice(id, 1);
 	  arr_name.splice(id, 1);
-	  arr_location.splice(id, 1);	
+	  arr_location.splice(id, 1);		  
+	  	  
 		showworkplace();
 		$("#myModal").modal("hide");
   }
@@ -236,23 +259,23 @@ include_once("header.php");
         <div class="modal-body">
 			<div class="form-group">
 			  Workplace Name<br>
-			  <input type="text" id="workplace_name" class="form-control">
+			  <input type="text" id="workplace_name" data-comma="yes" class="form-control">
 			</div>
 			
 			<div class="form-group">
 			  Workplace Location<br>
-			  <input type="text" id="workplace_location" class="form-control">
+			  <input type="text" id="workplace_location" data-comma="yes" class="form-control">
 			</div>
 
 			<div class="form-group">
 			  Position<br>
-			  <input type="text" id="workplace_position" class="form-control">
+			  <input type="text" id="workplace_position" data-comma="yes" class="form-control">
 			</div>
 
 
 			<div class="form-group">
 			   From<br>
-			  <input type="date"  id="workplace_from" class="form-control">
+			  <input type="date"  id="workplace_from" data-comma="yes" class="form-control">
 			</div>
 			   Till<br>
 			   <input type="checkbox" onchange="show_till()" id="workplace_current">&nbsp You currently work here.
@@ -276,9 +299,15 @@ include_once("header.php");
 
 
   <script>
-  var achievement_count = 0;
-  var arr_achievetitle = [];
-  var arr_achievedesc = [];
+  
+  
+  var arr_achievetitle =  <?php if(!empty($_POST['players_achievement|achievements_title'])){echo $_POST['players_achievement|achievements_title'];}else{echo "[]";} ?>;
+   var arr_achievedesc = <?php if(!empty($_POST['players_achievement|achievements_desc'])){echo $_POST['players_achievement|achievements_desc'];}else{echo "[]";} ?>;
+  
+  var achievement_count = arr_achievetitle.length;  
+  //var arrs_achievetitle =  [<?php if(!empty($_POST['players_achievement|achievements_title'])){echo ($_POST['players_achievement|achievements_title']);}else{echo "";} ?>];
+  // var arrs_achievedesc = [<?php if(!empty($_POST['players_achievement|achievements_desc'])){echo ($_POST['players_achievement|achievements_desc']);}else{echo '';} ?>];
+  
   var editachieve_id = "";
   
   
@@ -302,6 +331,12 @@ include_once("header.php");
 		arr_achievetitle.push(achievement_title);
 		arr_achievedesc.push(achievement_desc);		
 		
+		//arrs_achievetitle.push(JSON.stringify(achievement_title));
+		//arrs_achievedesc.push(JSON.stringify(achievement_desc));		
+		//arrs_achievetitle.push('"'+achievement_title+'"');
+		//arrs_achievedesc.push('"'+achievement_desc+'"');		
+		
+		
 		if(editachieve_id != "")
 		{
 			remove_achivement(editachieve_id);
@@ -314,8 +349,8 @@ include_once("header.php");
   
   function showachievement()
   {
-	  document.getElementById("achievements_title").value = arr_achievetitle;
-	  document.getElementById("achievements_desc").value = arr_achievedesc;	  
+	  document.getElementById("achievements_title").value = JSON.stringify(arr_achievetitle);
+	  document.getElementById("achievements_desc").value = JSON.stringify(arr_achievedesc);	  
 	 
 	  document.getElementById("achievement_title").value = "";
 	  document.getElementById("achievement_desc").value = "";
@@ -326,8 +361,7 @@ include_once("header.php");
 	  
 	  
 	  while(achievement_c != achievement_count )
-	  {		
-  
+	  {				  
 		 if(arr_achievetitle[achievement_c])	
 		 {		
 		 $("#list_achievement").append(' <div class="card mb-2 m-3">   <div class="row no-gutters">     <div class="col-md-1"><center>       <h1><i class="fa fa-trophy p-4"></i></h1>     </div>     <div class="col-md-8">	        <div class="card-body">	         <h5 class="card-title">'+arr_achievetitle[achievement_c]+'</h5>		         <p class="card-text">'+arr_achievedesc[achievement_c]+'</p>        		<div class="pull-right"><div class="btn-group"><button type="button" class="btn btn-danger" onclick="remove_achivement(\''+achievement_c+'\')">Remove</button><button type="button" class="btn btn-light" onclick="edit_achivement(\''+achievement_c+'\')">Edit</button></div></div> 		<br> 	  </div> 	      </div>   </div> </div>');		
@@ -336,6 +370,8 @@ include_once("header.php");
 	  }
 	  
 	  $("#addachievement").modal("hide");
+	  console.log(arr_achievedesc);
+	  console.log(arr_achievetitle);
   }
   
   function edit_achivement(id)
@@ -348,11 +384,19 @@ include_once("header.php");
   
   function remove_achivement(id)
   {	 
+	  
 	  arr_achievetitle.splice(id, 1);
-	  arr_achievedesc.splice(id, 1);	
+	  arr_achievedesc.splice(id, 1);
+	
+	 // arrs_achievetitle.splice(id, 1);
+	 // arrs_achievedesc.splice(id, 1);	
+	  
+	 // console.log(arrs_achievedesc);
 		showachievement();
 		$("#addachievement").modal("hide");
   }
+  
+
   </script>
   
 
@@ -371,12 +415,12 @@ include_once("header.php");
         <div class="modal-body">
 			<div class="form-group">
 			  Achievement Title<br>
-			  <input type="text" id="achievement_title" class="form-control">
+			  <input type="text" id="achievement_title" data-comma="yes" class="form-control">
 			</div>
 			
 			<div class="form-group">
 			  Achievement Description<br>
-			  <input type="text" id="achievement_desc" class="form-control">
+			  <input type="text" id="achievement_desc" data-comma="yes" class="form-control">
 			</div>
 			
 			<button type="button" class="btn btn-success" onclick="addachievement()">Add</button>
@@ -393,87 +437,104 @@ include_once("header.php");
   </div>
 
 
+<!-- The Modal -->
+<div class="modal" id="profileimg">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Change Profile Image</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">        
+		<input type="file" name="fileToUpload" id="fileToUpload">
+		<input type="submit" value="Upload Image" name="submit" onclick="saveimage('<?php echo $_POST['players|id']; ?>')">		
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <?php 
 include_once("footer.php");
 ?>
 
 <script>
 
- document.addEventListener('keydown', event => {
-	// console.log(event.target.id);	 
-	removecomma(event.target.id);
-	 if(event.target.id){
-	 getauthentication(event.target.id);	 
-	 }
- });
-
-	function removecomma(id){
-		
-	}
-	
-  function getauthentication(id) {		
-		var ele_value = document.getElementById(id).value;
-		var ele_type = document.getElementById(id).type;
-		var ele_id = document.getElementById(id).id;
-		var datais = document.getElementById(id).getAttribute("data-is");
-		var display_result = id+"_status";
-			
+function saveimage(id){			
+		var profileimage = $('#fileToUpload').prop('files')[0];
+		var form_data = new FormData();                  
+		form_data.append('fileToUpload', profileimage);			
 		
 		$.ajax({
-                url: "authenticate.php",
-                type: 'POST',				
-                data: {val: ele_value, type: ele_type, id: ele_id, datais: datais},	
-                success: function (result) {				
-					
-					if(document.getElementById(display_result))
-					{
-						document.getElementById(display_result).innerHTML = result;								
-						
-						if(result)
-						{
-							$("#save_button").hide();
-						}
-						else
-						{
-							$("#save_button").show();
-						}
-					}	
-                }
-            });								
-	}	
-	
-
+        url: 'saveprofile.php', // point to server-side PHP script 
+        dataType: 'text',  // what to expect back from the PHP script, if anything
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data,                         
+        type: 'post',
+        success: function(response){
+			alert("Successfull Uploaded. Save to Make the Changes.");
+			//alert(response);
+            if(response)
+			{
+				document.getElementById("players_profile|profile_image").value = response;
+				document.getElementById("display_profileimage").value = response;
+			}
+        }
+		});
+}
 </script>
+
 <script>
-	<?php 
-		if($results['players']->sports){echo 'var sportsplay = ["'.$results['players']->sports.'"];';}
-		else{echo 'var sportsplay = ["Football","Tennis","Table tennis","Running","High jumping","Cricket"];';}
-	?>
+
+<?php 
+//if(isset($_POST["players|sports"])){echo 'var sportsplay = ['.$_POST["players|sports"].'];var sportsplays = [];';}else {echo 'var sportsplay = [];var sportsplays = [];';}?> 
+
+var sportsplay = <?php echo json_encode(str_getcsv($_POST["players|sports"]));?>;
+
   
-  showbadages();
   function showbadages()
-  {	  	    
-	 document.getElementById("addedsports").innerHTML = "";
-	 for(i = 0; i < sportsplay.length; i++){ 	 	 
-	 $("#addedsports").append('<span class="badge badge-secondary p-2 m-1">'+sportsplay[i]+' <p style="display:inline;color:white;background-color:inherit;border:0px solid ;padding:0.1em;" onclick="removefromsportlist(\''+sportsplay[i]+'\')">x</p></span>');	 
+  {	  	    	
+	
+	 document.getElementById("addedsports").innerHTML = "";	 	 
+	 document.getElementById("og_sports").value = sportsplay;
+		console.log(sportsplay);
+		
+	 for(i = 0; i < sportsplay.length; i++){ 	 
+		if(sportsplay[i]){
+			 $("#addedsports").append('<span class="badge badge-secondary p-2 m-1">'+sportsplay[i]+' <p style="display:inline;color:white;background-color:inherit;border:0px solid ;padding:0.1em;" onclick="removefromsportlist(\''+sportsplay[i]+'\')">x</p></span>');	 
+		}
 	 }
+	 
   }
   
   
   function removefromsportlist(value)
   {
 	  sportsplay.indexOf(value) !== -1 && sportsplay.splice(sportsplay.indexOf(value), 1)	 
+	  //sportsplays.indexOf(value) !== -1 && sportsplays.splice(sportsplays.indexOf(value), 1)	 
 	  showbadages();
   }
   
   function addtosportlist(element, value)  
   {	 
-	  if(value){
+	  if(value != null){
 	  document.getElementById(element).value = "";
 	  document.getElementById("autocompleteitems").innerHTML = "";
 	  if(!sportsplay.includes(value))
 	  {
-	  sportsplay.push(value);	  
+	  sportsplay.push(value);
+	//  sportsplays.push('"'+value+'"');	  
 	  }
 	  showbadages();	  
 	  }
@@ -499,12 +560,14 @@ include_once("footer.php");
     for (var i = 0; i < opts.length; i++) {
       if (opts[i].value === val) {
 		addtosportlist(fieldid, opts[i].value);
-		document.getElementById("og_sports").value = sportsplay;
-        //alert(opts[i].value);
+		//alert(opts[i].value);
         break;
       }
     }
 }
-
+  showbadages();  
+  showachievement();
+  showworkplace();
+  
   </script>
- 
+ <script src="authenticate.js"></script>

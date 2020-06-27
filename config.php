@@ -16,6 +16,8 @@ define( "ADMIN_PASSWORD", "mypass" );
 //require( CLASS_PATH . "/Users.php" );
 //require( CLASS_PATH . "/Players.php" );
 
+$error_mysql  = "";
+
 /**
  * exception function
  *

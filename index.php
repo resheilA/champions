@@ -1,119 +1,93 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
--->
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>Estate Agent a Real Estate Category Bootstrap Responsive Website Template | Home :: W3layouts</title>
-    <!-- web fonts -->
-    <link href="//fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css?family=Hind&display=swap" rel="stylesheet">
-    <!-- //web fonts -->
-    <!-- Template CSS -->
-    <link rel="stylesheet" href="<?php echo C_ASSET_PATH; ?>assets/css/style-starter.css">
-  </head>
-  <body>
-
-
-<!-- Top Menu 1 -->
-<section class="w3l-top-menu-1">
-	<div class="top-hd">
-		<div class="container">
-	<header class="row">
-		<div class="social-top col-lg-3 col-6">
-			<li>Follow Us</li>
-			<li><a href="#"><span class="fa fa-facebook"></span></a></li>
-			<li><a href="#"><span class="fa fa-instagram"></span></a> </li>
-				<li><a href="#"><span class="fa fa-twitter"></span></a></li>
-				<li><a href="#"><span class="fa fa-vimeo"></span></a> </li>
-		</div>
-		<div class="accounts col-lg-9 col-6">
-				<li class="top_li"><span class="fa fa-mobile"></span><a href="tel:+142 5897555">+142 5897555</a> </li>
-				<li class="top_li1"><a href="#">Login</a></li>
-				<li class="top_li2"><a href="#">Register</a></li>
-		</div>
-		
-	</header>
-</div>
-</div>
-</section>
-<!-- //Top Menu 1 -->
-<section class="w3l-bootstrap-header">
-  <nav class="navbar navbar-expand-lg navbar-light py-lg-2 py-2">
-    <div class="container">
-      <a class="navbar-brand" href="index.html"><span class="fa fa-trophy" style="color:#D4AF37;"></span> Champion</a>
-      <!-- if logo is image enable this   
-    <a class="navbar-brand" href="#index.html">
-        <img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
-    </a> -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon fa fa-bars"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">About</a>
-          </li>
-           <li class="nav-item">
-            <a class="nav-link" href="services.html">Services</a>
-          </li>
-        
-          <li class="nav-item mr-0">
-            <a class="nav-link" href="contact.html">Contact</a>
-          </li>
-        </ul>
-       
-      </div>
-    </div>
-  </nav>
-</section>
+<?php $result['success_redirect'] = "pages.php?page=editprofile"; ?>
+<?php include_once("savedata.php"); ?>
+<?php include_once("header.php"); ?>
 <section class="form-12" id="home">
 	<div class="form-12-content">
 		<div class="container">
 			<div class="grid grid-column-2 ">
 				<div class="column2">
-                    <h1 style='color:white'>Join the India's unique sports community</h1><br>
-                    <p style='color:white'> We are cewmfk nfkrnfekr fne kjfnrkflrenflkejnfe knre kfnre lkfnre lkfnreflkren flker nflkre nflkrenf lkre nfelkf nelkfn elkfnerk fnerk fnre kfnelkfnrelkfenrflkernflkre nflkrenferlkfnerlk fnerkf</p>
+                    <h1 style='color:white'>Join the India's sports community and be found.</h1><br>
+                    <p style='color:white'> Champion is for all ! Atheletes, Sports enthusiast, Fitness Trainers, Coaches, Trainers, Logistic managers, Commentators, Massage therapists and the list is endless. If you are into sports, this is the best place to get recruited and stay updated about your favourite sports. </p>
 					</div>
 				<div class="column1">
-                <h2>Register to get access to exclusive sports content, events and people.</h2>
+                <h2>Search for sports, places, turfs and events !</h2>
 			<br>
+			
+			<!----
                 <form action="index.php?action=<?php echo $results['formAction']?>" method="post">
-    <input type="hidden" name="id" value="<?php echo $results['players']->id ?>"/>
-    <input type="hidden" name="roleid" value="<?php echo "13114113"; ?>"/>
-    <input type="hidden" name="sports" value="<?php echo "all"; ?>"/>
-    <input type="hidden" name="pincode" value="<?php echo "100001"; ?>"/>
+    <input type="hidden" name="id" />
+    <input type="hidden" name="roleid"/>
+    <input type="hidden" name="sports" />
+    <input type="hidden" name="pincode"/>
     <input type="hidden" name="player" value="yes"/>
     
 <div class="form-group">
   Name<br>
-  <input type="text" name="name" class="form-control" value="<?php echo $results['players']->name; ?>">
+  <input type="text" name="name" class="form-control">
 </div>
+
 
 <div class="form-group">
   Email<br>
-  <input type="text" name="email" class="form-control" value="<?php echo $results['players']->email; ?>">    
+  <input type="text" name="email" class="form-control">    
 </div>
 
 <div class="form-group">  
-  Contact No<br> <input type="text" class="form-control" name="contact_no" value="<?php echo htmlspecialchars( $results['players']->contact_no )?>">
+  Contact No<br> <input type="text" class="form-control" name="contact_no">
 </div>
 
 <div class="form-group">  
-Password <br><input type="password" class="form-control" name="password" value="<?php echo htmlspecialchars( $results['players']->password )?>">
+Password <br><input type="password" class="form-control" name="password">
 </div>
-    <button type="submit" class="btn" name="saveChanges" value="Save Changes">Sign up</button>    
+    <button type="submit" class="btn" value="Save Changes">Sign up</button>    
 </form>
+
+--------->
+
+
+						
+							<div class="blog-search form d-flex search-form">
+								<input type="search" class="form-control" placeholder="Enter Location, Club, Landmark, Event" name="search" required="required">
+								<button type="submit" class="btn search-btn"><span class="fa fa-search"></span></button>
+							</div>
+							<hr>
+							<h2 class="pb-4">Be a part of the sports community and be known</h2>
+							<?php echo $error_mysql; ?>	
+								     <form method="post" id="player_profile" onsubmit="event.preventDefault(); checkauthentic();">   
+							<div class="form-top">							
+								
+									<div class="form-group">
+									  Name<br>
+									  <input type="text" name="players|name" data-is="yes" id="player_name" class="form-control" value="<?php if(isset($_POST["players|name"])){echo $_POST['players|name']; } ?>">
+									  <div id="player_name_status"></div>
+									</div>
+										
+									<div class="form-group">
+									  Enter your Email Address<br>
+									  <input type="email" name="players|email" data-is="yes" data-comma="yes" id="player_email" class="form-control" value="<?php if(isset($_POST["players|email"])){echo $_POST['players|email']; } ?>">
+									  <div id="player_email_status"></div>
+									</div>	
+
+							</div>							
+						
+							<div class="form-top">
+
+								<div class="form-group">  
+								  Contact No<br> <input type="text" data-is="yes" id="player_contactno" class="form-control" name="players|contact_no" value="<?php if(isset($_POST["players|contact_no"])){echo $_POST['players|contact_no']; } ?>">
+								<div id="player_contactno_status"></div>
+								</div>
+
+
+								<div class="form-group">  
+								Password <br><input type="password" id="player_password" class="form-control" name="players|password" value="<?php if(isset($_POST["players|password"])){echo $_POST['players|password']; } ?>">
+								<div id="player_password_status"></div>
+								</div>																	
+								
+							</div>
+							
+							<button type="submit" id="save_button" type="button" class="btn btn-success" value="Save Changes">Sign Up</button>        
+								</form>								
+														
 			</div>
 				
 			</div>
@@ -789,10 +763,14 @@ Password <br><input type="password" class="form-control" name="password" value="
                  </script>
                  <!-- /move top -->
 </section>
+
 <!-- // grids block 5 -->
 <script src="<?php echo C_ASSET_PATH; ?>assets/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 <!-- //footer-28 block -->
 </section>
+
 
 <script>
     $(function () {
@@ -800,10 +778,6 @@ Password <br><input type="password" class="form-control" name="password" value="
         $('body').toggleClass('noscroll');
       })
     });
-  </script>
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
   </script>
   
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
@@ -817,3 +791,4 @@ Password <br><input type="password" class="form-control" name="password" value="
 
 </html>
 <!-- // grids block 5 -->
+<script src="authenticate.js"></script>

@@ -1,7 +1,3 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
--->
 <?php include("config.php"); ?>
 <!doctype html>
 <html lang="en">
@@ -10,13 +6,14 @@ Author URL: http://w3layouts.com
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Estate Agent a Real Estate Category Bootstrap Responsive Website Template | About :: W3layouts</title>
+    <title>Champion.in</title>
       <!-- web fonts -->
     <link href="//fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Hind&display=swap" rel="stylesheet">
     <!-- //web fonts -->
     <!-- Template CSS -->
     <link rel="stylesheet" href="<?php echo C_ASSET_PATH; ?>assets/css/style-starter.css">
+	
   </head>
   <body>
 
@@ -31,12 +28,17 @@ Author URL: http://w3layouts.com
 			<li><a href="#"><span class="fa fa-facebook"></span></a></li>
 			<li><a href="#"><span class="fa fa-instagram"></span></a> </li>
 				<li><a href="#"><span class="fa fa-twitter"></span></a></li>
-				<li><a href="#"><span class="fa fa-vimeo"></span></a> </li>
+				<li><a href="#"><span class="fa fa-vimeo"></span></a> </li>				
 		</div>
-		<div class="accounts col-lg-9 col-6">
-				<li class="top_li"><span class="fa fa-mobile"></span><a href="tel:+142 5897555">+142 5897555</a> </li>
-				<li class="top_li1"><a href="#">Login</a></li>
-				<li class="top_li2"><a href="#">Register</a></li>
+		<div class="accounts col-lg-9 col-6">				
+		<?php 
+		if(!isset($_SESSION["user_id"]))
+		{
+			echo '	<li class="top_li"><a href="pages.php?page=login">Login</a></li>
+				<li class="top_li"><a href="pages.php?page=signup">Register</a></li>
+				';
+		}
+		?>		
 		</div>
 		
 	</header>
@@ -60,28 +62,48 @@ Author URL: http://w3layouts.com
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Home</a>
+            <a class="nav-link" href="index.php">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="about.html">About</a>
+            <a class="nav-link" href="pages.php?page=aboutus">About</a>
              <!-- Dropdown -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        Dropdown link
+        Events
       </a>
       <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">Link 1</a>
-        <a class="dropdown-item" href="#">Link 2</a>
-        <a class="dropdown-item" href="#">Link 3</a>
+        <a class="dropdown-item" href="pages.php?page=listevents">Search Events</a>
+        <a class="dropdown-item" href="pages.php?page=listevents">Events Registered</a>        
+		<a class="dropdown-item" href="pages.php?page=listevents">Edit/Remove Events</a>        
       </div>
     </li>
-          </li>
-           <li class="nav-item">
-            <a class="nav-link" href="services.html">Services</a>
-          </li>
-        
-          <li class="nav-item mr-0">
-            <a class="nav-link" href="contact.html">Contact</a>
+	    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+        Clubs/Trufs/Grounds
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="pages.php?page=viewgrounds">Search for Ground</a>
+        <a class="dropdown-item" href="pages.php?page=viewgrounds">Your Grounds</a>        		
+      </div>
+    </li>
+	<?php 
+	if(isset($_SESSION["user_id"]))
+		{
+		echo '	
+	 <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+       Profile
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="pages.php?page=viewprofile">View Your Profile</a>
+        <a class="dropdown-item" href="logout.php">Logout</a>   
+      </div>
+    </li>
+	';
+		}
+	?>	
+		<li class="nav-item">
+            <a class="nav-link" href="pages.php?page=services">Services</a>
           </li>
         </ul>
        
@@ -90,14 +112,24 @@ Author URL: http://w3layouts.com
   </nav>
 </section>
 
-
+<?php 
+if(isset($result['titlebar']))
+if($result['titlebar'] == "yes"){
+	echo '
 <section class="w3l-about-breadcrum">
   <div class="breadcrum-bg py-sm-5 py-4">
     <div class="container py-lg-3">
       
-      <h2><i class="fa fa-fire"></i><?php echo $results['pagetitle']; ?></h2>
-      <p><a href="index.html">Champion's League</a> &nbsp; / &nbsp; About</p>
+      <h2><i class="fa fa-fire"></i>'.$result["title"].'</h2>
+      <p>'.$result["sub_title"].'</p>
    
     </div>
   </div>
 </section>
+';
+}
+else
+{
+	echo '<hr>';
+}
+?>
